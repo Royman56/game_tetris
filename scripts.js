@@ -1,12 +1,12 @@
 const canvas = document.getElementById("tetris");
 const ctx = canvas.getContext('2d');
 
-const scale = 20;
+const figure = 20; //cambia el tamaño de la figura
 
-ctx.scale(scale, scale);
+ctx.scale(figure, figure);
 
-const tWidth = canvas.width / scale;
-const tHeight = canvas.height / scale;
+const bgWidth = canvas.width / figure;
+const bgHeight = canvas.height / figure;
 
 const pieces = [
     [
@@ -58,7 +58,7 @@ const colors = [
 
 let arena = [];
 
-let rand;
+let fRandom;
 
 const player = {
     pos: {x: 0, y: 1},
@@ -66,9 +66,9 @@ const player = {
     color: null
 }
 
-rand = Math.floor(Math.random() * pieces.length);
-player.matrix = pieces[rand];
-player.color = colors[rand+1];
+fRandom = Math.floor(Math.random() * pieces.length);
+player.matrix = pieces[fRandom];
+player.color = colors[fRandom+1];
 
 function drawMatrix(matrix, x, y) {
     for (let i = 0; i < matrix.length; i++) {
@@ -79,7 +79,7 @@ function drawMatrix(matrix, x, y) {
     }
 }
 
-function rotateMatrix(matrix, dir) {
+function rotateFigure(matrix, dir) {
     let newMatrix = [];
 
     for (let i in matrix)
@@ -113,7 +113,7 @@ function collides(player, arena) {
     return 0;
 }
 
-function mergeArena(matrix, x, y) {
+function mergeArena(matrix, x, y) { //crea nuevas figuras en el escenario
     for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[i].length; j++) {
             arena[y+i+1][x+j+1] = arena[y+i+1][x+j+1] || matrix[i][j];
@@ -121,27 +121,7 @@ function mergeArena(matrix, x, y) {
     }
 }
 
-function clearBlocks() {
-    for (let i = 1; i < arena.length-2; i++) {
-        let clear = 1;
-
-        for (let j = 1; j < arena[i].length-1; j++) {
-            if (!arena[i][j])
-                clear = 0;
-        }
-
-        if (clear) {
-            let r = new Array(tWidth).fill(0);
-            r.push(1);
-            r.unshift(1);
-
-            arena.splice(i, 1);
-            arena.splice(1, 0, r);
-        }
-    }
-}
-
-function drawArena() {
+function floor() { //Esto coloca el piso
     for (let i = 1; i < arena.length-2; i++) {
         for (let j = 1; j < arena[i].length-1; j++) {
             if (arena[i][j]) {
@@ -155,26 +135,28 @@ function drawArena() {
 function initArena() {
     arena = [];
 
-    const r = new Array(tWidth + 2).fill(1);
-    arena.push(r);
+    const scene = new Array(bgWidth + 2).fill(1);
+    arena.push(scene);
 
-    for (let i = 0; i < tHeight; i++) {
-        let row = new Array(tWidth).fill(0);
+    for (let i = 0; i < bgHeight; i++) {
+        let row = new Array(bgWidth).fill(0);
         row.push(1);
         row.unshift(1);
 
         arena.push(row);
     }
 
-    arena.push(r);
-    arena.push(r);
+    arena.push(scene);
+    arena.push(scene);
 }
 
-function gameOver() {
-    for (let j = 1; j < arena[1].length-1; j++)
-        if (arena[1][j])
-            return initArena();
-            
+function gameOver() { //esta funcion reinicia el juego
+    for (let f = 1; f < arena[1].length-1; f++){
+        if (arena[1][f]){
+        return initArena();
+        }
+    }
+          
     return;
     
 }
@@ -186,9 +168,9 @@ let count = 0;
 
 function update(time = 0) {
 
-    const dt = time - lastTime;
-    lastTime = time;
-    count += dt;
+    const dt = time - lastTime;//baja automaticamente la figura
+    lastTime = time;//baja automaticamente la figura
+    count += dt;//baja automaticamente la figura
 
     if (count >= interval) {
         player.pos.y++;
@@ -196,16 +178,16 @@ function update(time = 0) {
     }
 
     if (collides(player, arena)) {
-        mergeArena(player.matrix, player.pos.x, player.pos.y-1);
-        clearBlocks();
+        mergeArena(player.matrix, player.pos.x, player.pos.y-1);//establece un limite con el suelo
+      
         gameOver();
 
         player.pos.y = 1;
         player.pos.x = 0;
 
-        rand = Math.floor(Math.random() * pieces.length);
-        player.matrix = pieces[rand];
-        player.color = colors[rand+1];
+        fRandom = Math.floor(Math.random() * pieces.length);
+        player.matrix = pieces[fRandom];
+        player.color = colors[fRandom+1];
 
         interval = 1000;
     }
@@ -213,11 +195,11 @@ function update(time = 0) {
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    drawArena();
+    floor();
     ctx.fillStyle = player.color;
     drawMatrix(player.matrix, player.pos.x, player.pos.y);
 
-    requestAnimationFrame(update);
+    requestAnimationFrame(update);//animacion para que la figura baje
 }
 
 document.addEventListener("keydown", event => {
@@ -234,10 +216,10 @@ document.addEventListener("keydown", event => {
         player.pos.y++;
         count = 0;
     } else if (event.key === "ArrowUp") {
-        player.matrix = rotateMatrix(player.matrix, 1);
+        player.matrix = rotateFigure(player.matrix, 1);
         if (collides(player, arena))
-            player.matrix = rotateMatrix(player.matrix, -1);
-    } else if (event.keyCode === 32) {
+            player.matrix = rotateFigure(player.matrix, -1);
+    } else if (event.key === "Space") {
         interval = 1;
     }
 
