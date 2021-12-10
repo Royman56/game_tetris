@@ -2,11 +2,28 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Tetris</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" crossorigin="anonymous"/>
         <link rel="stylesheet" href="./style.css">
+        <title>Tetris</title>
+        
     </head>
     <body>
-        <canvas id="tetris" width="220" height="400"></canvas>
+        <div class="canvas-container">
+            <h1 class="score">Puntaje: </h1>
+            <canvas class="canvas" id="tetris" width="300" height="500"></canvas>
+            <div class="btn-container">
+                <button class="btn btn-big play-btn"><i class="fas fa-play-circle"></i></button>
+                <button class="btn btn-big up-btn"><i class="fas fa-arrow-circle-up"></i></button>
+                <button class="btn btn-big down-btn"><i class="fas fa-arrow-circle-down"></i></button>
+                <button class="btn btn-big left-btn"><i class="fas fa-arrow-circle-left"></i></button>
+                <button class="btn btn-big right-btn"><i class="fas fa-arrow-circle-right"></i></button>
+                <button class="btn reset-btn"><i class="fas fa-redo"></i></button>
+                <button class="btn music-btn"><i class="fas fa-music"></i></button>
+            </div>
+        </div>
+        
         <script src="./scripts.js" charset="utf-8"></script>
     </body>
 </html>

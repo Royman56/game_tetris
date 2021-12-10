@@ -174,9 +174,11 @@ function gameOver() {
     for (let j = 1; j < arena[1].length-1; j++)
         if (arena[1][j])
             return initArena();
-
+            
     return;
+    
 }
+
 
 let interval = 1000;
 let lastTime = 0;
