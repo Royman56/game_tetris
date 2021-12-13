@@ -11,19 +11,20 @@
     </head>
     <body>
         <div class="canvas-container">
-            <h1 class="score">Puntaje: </h1>
-            <canvas class="canvas" id="tetris" width="300" height="500"></canvas>
+            <h1 id="scoreboard">Score: </h1>
+            <canvas class="canvas" id ="game-canvas" width="300" height="500"></canvas>
             <div class="btn-container">
-                <button class="btn btn-big play-btn"><i class="fas fa-play-circle"></i></button>
-                <button class="btn btn-big up-btn"><i class="fas fa-arrow-circle-up"></i></button>
-                <button class="btn btn-big down-btn"><i class="fas fa-arrow-circle-down"></i></button>
-                <button class="btn btn-big left-btn"><i class="fas fa-arrow-circle-left"></i></button>
-                <button class="btn btn-big right-btn"><i class="fas fa-arrow-circle-right"></i></button>
-                <button class="btn reset-btn"><i class="fas fa-redo"></i></button>
-                <button class="btn music-btn"><i class="fas fa-music"></i></button>
+                <button id="up" onclick="model.rotate()" class="btn btn-big up-btn"><i class="fas fa-arrow-circle-up"></i></button>
+                <button id="down" onclick="model.moveDown()" class="btn btn-big down-btn"><i class="fas fa-arrow-circle-down"></i></button>
+                <button id="left"  onclick="model.move(false)" class="btn btn-big left-btn"><i class="fas fa-arrow-circle-left"></i></button>
+                <button id="right" onclick="model.move(right)" class="btn btn-big right-btn"><i class="fas fa-arrow-circle-right"></i></button>
+                <button id="reset" onclick="reset()" class="btn reset-btn"><i class="fas fa-redo"></i></button>
             </div>
         </div>
-        
-        <script src="./scripts.js" charset="utf-8"></script>
+        <script src="./constants.js"></script>
+        <script src="./piece.js"></script>
+        <script src="./model.js"></script>
+        <script src="./tetris.js"></script>
+    
     </body>
 </html>

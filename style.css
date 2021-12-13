@@ -19,7 +19,7 @@
     flex-direction: column;
 }
 
-.score {
+#scoreboard {
     font-family: monospace;
     color: #fff;
     margin-bottom: 10px;
