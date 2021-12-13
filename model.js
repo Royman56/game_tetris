@@ -72,7 +72,7 @@ class GameModel {
 
             // check game over 
             if (this.fallingPiece.y === 0) {
-                alert("Game over!") 
+                swal('Lo siento', 'Perdiste', 'error')
                 this.grid = this.makeStartingGrid()
             }
             this.fallingPiece = null
